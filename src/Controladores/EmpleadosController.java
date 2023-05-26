@@ -38,7 +38,7 @@ public class EmpleadosController implements ActionListener, MouseListener{
       /*REALIZAR LA CONEXION*/
             
             //Limpiar la tabla Vista Empleados
-                DefaultTableModel TablaModelo = new DefaultTableModel();
+                /*DefaultTableModel TablaModelo = new DefaultTableModel();
                 TablaModelo.setRowCount(0);
                 TablaModelo.setColumnCount(0);
                 this.VistaEmpleados.jtbEmpleados.setModel(TablaModelo);
@@ -51,9 +51,9 @@ public class EmpleadosController implements ActionListener, MouseListener{
                     
       /* LEVANTAR EL MODELO Y LOGRAR RECORRER EL RESULTSET*/
         //Captar el resultado que viene del Modelo desde el método LISTARDATOS
-                ResultSet rstEmpleados =  this.ModeloEmpleado.ListarDatos();
+                //ResultSet rstEmpleados =  this.ModeloEmpleado.ListarDatos();
                
-                    try
+                    /*try
                     {
                        
                     while(rstEmpleados.next())
@@ -64,18 +64,21 @@ public class EmpleadosController implements ActionListener, MouseListener{
                     catch(SQLException e)
                     {
                         JOptionPane.showMessageDialog(null, "Algo hizo falta..."+e);
-                    }
+                    }*/
                    
             //PASAR EL MODELO CREADO A LA TABLA DE LA VISTA EMPLEADOS        
-                    this.VistaEmpleados.jtbEmpleados.setModel(TablaModelo);
+                    
                     
             //Poner a la escucha la tabla empleados
                     this.VistaEmpleados.jtbEmpleados.addMouseListener(this);
                     
         
         /*LEVANTAR LA VISTA EMPLEADOR*/
+        DefaultTableModel TablaModelo = this.ModeloEmpleado.ListarDatos();
+        this.VistaEmpleados.jtbEmpleados.setModel(TablaModelo);
       this.VistaEmpleados.setLocationRelativeTo(null);
       this.VistaEmpleados.setVisible(true);
+      
     }
 
     @Override
@@ -84,7 +87,30 @@ public class EmpleadosController implements ActionListener, MouseListener{
         {
             this.ModeloEmpleado.Actualizar(Integer.parseInt(this.VistaEmpleados.txtCodigo.getText()), this.VistaEmpleados.txtApellidos.getText(),
                     this.VistaEmpleados.txtNombre.getText(), this.VistaEmpleados.txtTelefono.getText());
-            this.ModeloEmpleado.ListarDatos();
+            //this.ModeloEmpleado.ListarDatos();
+            DefaultTableModel TablaModelo = this.ModeloEmpleado.ListarDatos();
+            this.VistaEmpleados.jtbEmpleados.setModel(TablaModelo);
+        }
+        if(e.getSource() == this.VistaEmpleados.btn_Agregar)
+        {
+            this.ModeloEmpleado.Guardar(Integer.parseInt(this.VistaEmpleados.txtCodigo.getText()), this.VistaEmpleados.txtApellidos.getText(),
+                    this.VistaEmpleados.txtNombre.getText(), this.VistaEmpleados.txtTelefono.getText());
+            //this.ModeloEmpleado.ListarDatos();
+            DefaultTableModel TablaModelo = this.ModeloEmpleado.ListarDatos();
+            this.VistaEmpleados.jtbEmpleados.setModel(TablaModelo);
+        }
+        if(e.getSource() == this.VistaEmpleados.btnEliminar)
+        {
+           this.ModeloEmpleado.Eliminar(Integer.parseInt(this.VistaEmpleados.txtCodigo.getText()),
+                this.VistaEmpleados.txtApellidos.getText(),
+                    this.VistaEmpleados.txtNombre.getText(), this.VistaEmpleados.txtTelefono.getText());
+            DefaultTableModel TablaModelo = this.ModeloEmpleado.ListarDatos();
+            this.VistaEmpleados.jtbEmpleados.setModel(TablaModelo);
+            
+            this.VistaEmpleados.txtCodigo.setText("");
+            this.VistaEmpleados.txtApellidos.setText("");
+            this.VistaEmpleados.txtNombre.setText("");
+            this.VistaEmpleados.txtTelefono.setText("");
         }
 
     }
